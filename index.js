@@ -109,6 +109,15 @@ let projectiles = [];
 let enemies = [];
 let particles= [];
 
+const state = {
+    player, 
+    projectiles, 
+    enemies, 
+    particles
+}
+
+const game = createGame()
+
 function init() {
     player = new Player(x, y, 10, 'white');
     projectiles = [];
@@ -128,9 +137,9 @@ function spawnEnemies() {
     
         if (Math.random() < 0.5) {
             x = Math.random() < 0.5 ? 0 - radius : player.x + radius;
-            y = Math.random() * player.y + 100
+            y = Math.random() * player.y + 500
         } else {
-            x = Math.random() * player.x + 100;
+            x = Math.random() * player.x + 500;
             y = Math.random() < 0.5 ? 0 - radius : player.y + radius;
         }
         //const color = 'green';
@@ -142,8 +151,8 @@ function spawnEnemies() {
         );
     
         const velocity = {
-            x: Math.cos(angle) * 2,
-            y: Math.sin(angle) * 2
+            x: Math.cos(angle) * 0.25,
+            y: Math.sin(angle) * 0.25
         };
         console.log('criou um a x9')
         enemies.push(new Enemy(x, y, radius, color, velocity));
@@ -244,35 +253,6 @@ function animate() {
     )
 }
 
-
-addEventListener('keydown', handleKeydown)
-
-function handleKeydown(event){
-    const keyPressed = event.key
-
-    console.log(keyPressed)
-
-    if (keyPressed === 'ArrowUp'){
-        player.y = player.y - 10
-        player.draw()
-    }
-
-    if (keyPressed === 'ArrowDown'){
-        player.y = player.y + 10
-        player.draw()
-    }
-
-    if (keyPressed === 'ArrowRight'){
-        player.x = player.x + 10
-        player.draw()
-    }
-
-    if (keyPressed === 'ArrowLeft'){
-        player.x = player.x - 10
-        player.draw()
-    }
-}
-
 addEventListener('click', (event) => 
     {
         console.log(projectiles)
@@ -299,3 +279,24 @@ startGameBtn.addEventListener('click', () =>
     modalEl.style.display = 'none'
 
 })
+
+
+addEventListener('keydown', handleKeydown)
+
+function handleKeydown(event){
+    const keyPressed = event.key
+
+    console.log(keyPressed)
+
+    const command = {
+        playerId : 'Player1',
+        keyPressed
+    }
+}
+
+function createGame(){
+    function movePlayer(command) {
+        console.log(`movinig ${command.player.Id} with ${command.keyPressed}`)
+    }
+    return {movePlayer}
+}
